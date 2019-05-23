@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "a react component of tree use react-virtualize",
   "main": "lib/index",
+  "module": "./es/index",
   "config": {
     "port": 8018,
     "entry": {
-      "rc-tree": [
+      "rc-vtree": [
         "./assets/index.less",
         "./src/index.js"
       ]
@@ -23,9 +24,11 @@
   "scripts": {
     "test": "jest",
     "build": "rc-tools run build",
+    "dist": "rc-tools run dist",
+    "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
-    "pub": "rc-tools run update-self && rc-tools run pub",
+    "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "prepublish": "rc-tools run guard"
   },
