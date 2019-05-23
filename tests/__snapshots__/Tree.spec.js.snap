@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tree Basic check basic render 1`] = `
+<div
+  aria-label="grid"
+  aria-readonly="true"
+  class="ReactVirtualized__Grid ReactVirtualized__List rc-tree"
+  role="tree"
+  style="box-sizing:border-box;direction:ltr;height:50px;position:relative;width:500px;-webkit-overflow-scrolling:touch;will-change:transform;overflow-x:hidden;overflow-y:hidden"
+  tabindex="0"
+>
+  <div
+    class="ReactVirtualized__Grid__innerScrollContainer"
+    role="rowgroup"
+    style="width:auto;height:0;max-width:500px;max-height:0;overflow:hidden;pointer-events:;position:relative"
+  >
+    <div
+      class="rc-tree-treenode-switcher-open"
+      role="treeitem"
+      style="height:0;left:0;position:absolute;top:0;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher_open"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-open"
+        title=""
+      >
+        <span
+          class="rc-tree-title"
+        />
+      </span>
+    </div>
+    <div
+      class="rc-tree-treenode-disabled rc-tree-treenode-deepness-1"
+      role="treeitem"
+      style="height:0;left:0;position:absolute;top:0;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher-noop"
+      />
+      <span
+        class="rc-tree-checkbox rc-tree-checkbox-disabled"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-normal"
+        title=""
+      >
+        <span
+          class="rc-tree-title"
+        />
+      </span>
+    </div>
+    <div
+      class="rc-tree-treenode-deepness-1"
+      role="treeitem"
+      style="height:0;left:0;position:absolute;top:0;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher-noop"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-normal"
+        title=""
+      >
+        <span
+          class="rc-tree-title"
+        />
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Tree Basic renders correctly 1`] = `
+<div
+  aria-label="grid"
+  aria-readonly="true"
+  class="ReactVirtualized__Grid ReactVirtualized__List rc-tree forTest rc-tree-show-line"
+  role="tree"
+  style="box-sizing:border-box;direction:ltr;height:50px;position:relative;width:500px;-webkit-overflow-scrolling:touch;will-change:transform;overflow-x:hidden;overflow-y:auto"
+  tabindex="0"
+>
+  <div
+    class="ReactVirtualized__Grid__innerScrollContainer"
+    role="rowgroup"
+    style="width:auto;height:110px;max-width:500px;max-height:110px;overflow:hidden;pointer-events:;position:relative"
+  >
+    <div
+      class="rc-tree-treenode-switcher-open"
+      role="treeitem"
+      style="height:20px;left:0;position:absolute;top:0;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher_open"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-open"
+        title="parent 1"
+      >
+        <span
+          class="rc-tree-title"
+        >
+          parent 1
+        </span>
+      </span>
+    </div>
+    <div
+      class="rc-tree-treenode-switcher-open rc-tree-treenode-deepness-1"
+      role="treeitem"
+      style="height:20px;left:0;position:absolute;top:20px;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher_open"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-open"
+        title="leaf 1"
+      >
+        <span
+          class="rc-tree-title"
+        >
+          leaf 1
+        </span>
+      </span>
+    </div>
+    <div
+      class="rc-tree-treenode-deepness-2"
+      role="treeitem"
+      style="height:20px;left:0;position:absolute;top:40px;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher-noop"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-normal"
+        title="leaf"
+      >
+        <span
+          class="rc-tree-title"
+        >
+          leaf
+        </span>
+      </span>
+    </div>
+    <div
+      class="rc-tree-treenode-deepness-2"
+      role="treeitem"
+      style="height:20px;left:0;position:absolute;top:60px;width:100%"
+    >
+      <span
+        class="rc-tree-switcher rc-tree-switcher-noop"
+      />
+      <span
+        class="rc-tree-checkbox"
+      />
+      <span
+        class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-normal"
+        title="leaf"
+      >
+        <span
+          class="rc-tree-title"
+        >
+          leaf
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,78 @@
+{
+  "name": "rc-vtree",
+  "version": "1.0.0",
+  "description": "a react component of tree use react-virtualize",
+  "main": "lib/index",
+  "config": {
+    "port": 8018,
+    "entry": {
+      "rc-tree": [
+        "./assets/index.less",
+        "./src/index.js"
+      ]
+    }
+  },
+  "files": [
+    "assets/*.css",
+    "assets/*.png",
+    "assets/*.gif",
+    "dist",
+    "es",
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "rc-tools run build",
+    "gh-pages": "rc-tools run gh-pages",
+    "start": "rc-tools run server",
+    "pub": "rc-tools run update-self && rc-tools run pub",
+    "lint": "rc-tools run lint",
+    "prepublish": "rc-tools run guard"
+  },
+  "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "transform": {
+      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    },
+    "testURL": "http://localhost"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nttdocomo/rc-vtree.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nttdocomo/rc-vtree/issues"
+  },
+  "homepage": "https://github.com/nttdocomo/rc-vtree#readme",
+  "devDependencies": {
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.0",
+    "enzyme-to-json": "^3.3.5",
+    "jest": "^24.8.0",
+    "rc-dialog": "^7.4.0",
+    "rc-tools": "^9.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-virtualized": "^9.21.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "classnames": "^2.2.6",
+    "prop-types": "^15.7.2",
+    "rc-util": "^4.6.0",
+    "warning": "^4.0.3"
+  }
+}
