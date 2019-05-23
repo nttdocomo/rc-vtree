@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///basic.less"],"names":[],"mappings":"AAAA;EACE,uBAAuB;EACvB,YAAY;AACd","file":"examples/basic.css","sourcesContent":[".rc-tree li a.rc-tree-node-selected .cus-label {\n  background-color: white;\n  border: none;\n}\n"],"sourceRoot":""}
