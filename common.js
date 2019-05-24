@@ -41772,13 +41772,15 @@ function (_React$Component) {
       var _this$props4 = this.props,
           prefixCls = _this$props4.prefixCls,
           selectable = _this$props4.selectable,
-          checkable = _this$props4.checkable;
+          checkable = _this$props4.checkable,
+          switcherIcon = _this$props4.switcherIcon;
       return {
         rcTree: {
           // root: this,
           prefixCls: prefixCls,
           checkable: checkable,
           selectable: selectable,
+          switcherIcon: switcherIcon,
           onNodeExpand: this.onNodeExpand,
           onNodeCheck: this.onNodeCheck,
           onNodeClick: this.onNodeClick,
@@ -41963,7 +41965,8 @@ _defineProperty(TreeList, "propTypes", {
   defaultExpandedKeys: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string),
   selectable: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   selectedKeys: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string),
-  onExpand: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+  onExpand: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  switcherIcon: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.node, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func])
 });
 
 _defineProperty(TreeList, "defaultProps", {
