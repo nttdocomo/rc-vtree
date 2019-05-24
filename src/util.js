@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
-import TreeNode from './VTreeNode';
+import TreeNode from './TreeNode';
 import warning from 'warning';
 
 export const isNodeExpanded = (node, expandedKeys) => expandedKeys.indexOf(node.key) > -1;

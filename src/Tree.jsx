@@ -321,11 +321,50 @@ export class TreeList extends React.Component {
     const { checkedKeys = [] } = this.state;
     return checkedKeys.indexOf(key) !== -1;
   };
+  renderTreeNode = (item, {index, isScrolling, key, parent, style}) => {
+    const {
+      rowRenderer
+    } = this.props;
+    const {
+      expandedKeys = [],
+      halfCheckedKeys = [],
+      selectedKeys = []
+    } = this.state;
+    const { children, isLeaf, title, ...props } = item
+    let child
+
+    if(rowRenderer){
+      const { children, isLeaf, title, ...props } = item
+      child = rowRenderer(item, {index, isScrolling, key, parent, style})
+      return React.cloneElement(child, {
+        isLeaf: isLeaf,
+        eventKey: item.key,
+        expanded: expandedKeys.indexOf(item.key) !== -1,
+        selected: selectedKeys.indexOf(item.key) !== -1,
+        checked: this.isKeyChecked(item.key),
+        halfChecked: halfCheckedKeys.indexOf(item.key) !== -1,
+        style:style,
+        ...props
+      });
+    } else {
+      const { children, isLeaf, ...props } = item
+      return <TreeNode
+        {...props}
+        isLeaf={isLeaf}
+        eventKey={item.key}
+        expanded={expandedKeys.indexOf(item.key) !== -1}
+        checked={this.isKeyChecked(item.key)}
+        selected={selectedKeys.indexOf(item.key) !== -1}
+        halfChecked={halfCheckedKeys.indexOf(item.key) !== -1}
+        style={style}
+      />
+    }
+  }
   render(){
     const {
       prefixCls, className, focusable,
       showLine, tabIndex = 0, treeData,
-      height, width
+      height, width, rowRenderer
     } = this.props;
     const {
       expandedKeys = [],
@@ -349,7 +388,6 @@ export class TreeList extends React.Component {
           return null
         }
         //return convertDataToTree(item)
-        const { children, ...props } = item
         return <CellMeasurer
           cache={cache}
           columnIndex={0}
@@ -357,6 +395,8 @@ export class TreeList extends React.Component {
           parent={parent}
           rowIndex={index}
         >
+          {this.renderTreeNode(item, {index, isScrolling, key, parent, style})}
+          {/*
           <TreeNode
             {...props}
             isLeaf={item.isLeaf}
@@ -366,7 +406,7 @@ export class TreeList extends React.Component {
             selected={selectedKeys.indexOf(item.key) !== -1}
             halfChecked={halfCheckedKeys.indexOf(item.key) !== -1}
             style={style}
-          />
+          />*/}
         </CellMeasurer>;
         // return this.renderTreeNode(treeNode, index)
         /*return React.cloneElement(child, {

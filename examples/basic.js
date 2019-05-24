@@ -107,6 +107,11 @@ class Demo extends React.Component {
           <Tree
             height={50}
             onExpand={this.onExpand}
+            rowRenderer={(item, {index, isScrolling, key, parent, style})=>{
+              return <TreeNode
+                title={<span>{item.title}......</span>}
+              ></TreeNode>
+            }}
             treeData={treeData}
           >
           </Tree>

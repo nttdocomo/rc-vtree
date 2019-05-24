@@ -1,6 +1,6 @@
 {
   "name": "rc-vtree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a react component of tree use react-virtualize",
   "main": "lib/index",
   "module": "./es/index",
@@ -54,7 +54,7 @@
     "type": "git",
     "url": "git+https://github.com/nttdocomo/rc-vtree.git"
   },
-  "author": "",
+  "author": "nttdocomo.ouyi@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nttdocomo/rc-vtree/issues"
