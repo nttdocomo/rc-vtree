@@ -328,6 +328,16 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_vtree__WEBPACK_IMPORTED_MODULE_3___default.a, {
         height: 50,
         onExpand: this.onExpand,
+        rowRenderer: function rowRenderer(item, _ref) {
+          var index = _ref.index,
+              isScrolling = _ref.isScrolling,
+              key = _ref.key,
+              parent = _ref.parent,
+              style = _ref.style;
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(rc_vtree__WEBPACK_IMPORTED_MODULE_3__["TreeNode"], {
+            title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, item.title, "......")
+          });
+        },
         treeData: treeData
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Check on Click TreeNode"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {

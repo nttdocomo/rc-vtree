@@ -41485,12 +41485,12 @@ var TreeList =
 function (_React$Component) {
   _inherits(TreeList, _React$Component);
 
-  function TreeList(props) {
+  function TreeList(_props) {
     var _this;
 
     _classCallCheck(this, TreeList);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TreeList).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TreeList).call(this, _props));
 
     _defineProperty(_assertThisInitialized(_this), "getFlattenedTree", function (nodes) {
       var parents = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -41693,6 +41693,67 @@ function (_React$Component) {
       return checkedKeys.indexOf(key) !== -1;
     });
 
+    _defineProperty(_assertThisInitialized(_this), "renderTreeNode", function (item, _ref2) {
+      var index = _ref2.index,
+          isScrolling = _ref2.isScrolling,
+          key = _ref2.key,
+          parent = _ref2.parent,
+          style = _ref2.style;
+      var rowRenderer = _this.props.rowRenderer;
+      var _this$state2 = _this.state,
+          _this$state2$expanded = _this$state2.expandedKeys,
+          expandedKeys = _this$state2$expanded === void 0 ? [] : _this$state2$expanded,
+          _this$state2$halfChec = _this$state2.halfCheckedKeys,
+          halfCheckedKeys = _this$state2$halfChec === void 0 ? [] : _this$state2$halfChec,
+          _this$state2$selected = _this$state2.selectedKeys,
+          selectedKeys = _this$state2$selected === void 0 ? [] : _this$state2$selected;
+
+      var children = item.children,
+          isLeaf = item.isLeaf,
+          title = item.title,
+          props = _objectWithoutProperties(item, ["children", "isLeaf", "title"]);
+
+      var child;
+
+      if (rowRenderer) {
+        var _children = item.children,
+            _isLeaf = item.isLeaf,
+            _title = item.title,
+            _props2 = _objectWithoutProperties(item, ["children", "isLeaf", "title"]);
+
+        child = rowRenderer(item, {
+          index: index,
+          isScrolling: isScrolling,
+          key: key,
+          parent: parent,
+          style: style
+        });
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(child, _objectSpread({
+          isLeaf: _isLeaf,
+          eventKey: item.key,
+          expanded: expandedKeys.indexOf(item.key) !== -1,
+          selected: selectedKeys.indexOf(item.key) !== -1,
+          checked: _this.isKeyChecked(item.key),
+          halfChecked: halfCheckedKeys.indexOf(item.key) !== -1,
+          style: style
+        }, _props2));
+      } else {
+        var _children2 = item.children,
+            _isLeaf2 = item.isLeaf,
+            _props3 = _objectWithoutProperties(item, ["children", "isLeaf"]);
+
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TreeNode__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, _props3, {
+          isLeaf: _isLeaf2,
+          eventKey: item.key,
+          expanded: expandedKeys.indexOf(item.key) !== -1,
+          checked: _this.isKeyChecked(item.key),
+          selected: selectedKeys.indexOf(item.key) !== -1,
+          halfChecked: halfCheckedKeys.indexOf(item.key) !== -1,
+          style: style
+        }));
+      }
+    });
+
     _this.state = {
       keyEntities: {},
       flatTreeData: [],
@@ -41739,14 +41800,15 @@ function (_React$Component) {
           tabIndex = _this$props5$tabIndex === void 0 ? 0 : _this$props5$tabIndex,
           treeData = _this$props5.treeData,
           height = _this$props5.height,
-          width = _this$props5.width;
-      var _this$state2 = this.state,
-          _this$state2$expanded = _this$state2.expandedKeys,
-          expandedKeys = _this$state2$expanded === void 0 ? [] : _this$state2$expanded,
-          _this$state2$halfChec = _this$state2.halfCheckedKeys,
-          halfCheckedKeys = _this$state2$halfChec === void 0 ? [] : _this$state2$halfChec,
-          _this$state2$selected = _this$state2.selectedKeys,
-          selectedKeys = _this$state2$selected === void 0 ? [] : _this$state2$selected;
+          width = _this$props5.width,
+          rowRenderer = _this$props5.rowRenderer;
+      var _this$state3 = this.state,
+          _this$state3$expanded = _this$state3.expandedKeys,
+          expandedKeys = _this$state3$expanded === void 0 ? [] : _this$state3$expanded,
+          _this$state3$halfChec = _this$state3.halfCheckedKeys,
+          halfCheckedKeys = _this$state3$halfChec === void 0 ? [] : _this$state3$halfChec,
+          _this$state3$selected = _this$state3.selectedKeys,
+          selectedKeys = _this$state3$selected === void 0 ? [] : _this$state3$selected;
       var flatTreeData = Object(_util__WEBPACK_IMPORTED_MODULE_7__["getFlattenedTree"])(treeData, [], expandedKeys);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_virtualized__WEBPACK_IMPORTED_MODULE_5__["List"], {
         className: classnames__WEBPACK_IMPORTED_MODULE_2___default()(prefixCls, className, _defineProperty({}, "".concat(prefixCls, "-show-line"), showLine)),
@@ -41756,12 +41818,12 @@ function (_React$Component) {
         overscanRowCount: 1 //ref:setRef,
         ,
         rowHeight: cache.rowHeight,
-        rowRenderer: function rowRenderer(_ref2) {
-          var index = _ref2.index,
-              isScrolling = _ref2.isScrolling,
-              key = _ref2.key,
-              parent = _ref2.parent,
-              style = _ref2.style;
+        rowRenderer: function rowRenderer(_ref3) {
+          var index = _ref3.index,
+              isScrolling = _ref3.isScrolling,
+              key = _ref3.key,
+              parent = _ref3.parent,
+              style = _ref3.style;
           var item = flatTreeData[index];
 
           if (!item) {
@@ -41769,24 +41831,19 @@ function (_React$Component) {
           } //return convertDataToTree(item)
 
 
-          var children = item.children,
-              props = _objectWithoutProperties(item, ["children"]);
-
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_virtualized__WEBPACK_IMPORTED_MODULE_5__["CellMeasurer"], {
             cache: cache,
             columnIndex: 0,
             key: key,
             parent: parent,
             rowIndex: index
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_TreeNode__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props, {
-            isLeaf: item.isLeaf,
-            eventKey: item.key,
-            expanded: expandedKeys.indexOf(item.key) !== -1,
-            checked: _this2.isKeyChecked(item.key),
-            selected: selectedKeys.indexOf(item.key) !== -1,
-            halfChecked: halfCheckedKeys.indexOf(item.key) !== -1,
+          }, _this2.renderTreeNode(item, {
+            index: index,
+            isScrolling: isScrolling,
+            key: key,
+            parent: parent,
             style: style
-          }))); // return this.renderTreeNode(treeNode, index)
+          })); // return this.renderTreeNode(treeNode, index)
 
           /*return React.cloneElement(child, {
             style:Object.assign({}, style, {

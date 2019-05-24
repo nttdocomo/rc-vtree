@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>basic.js - example - rc-vtree@1.0.0</title>
+  <title>basic.js - example - rc-vtree@1.0.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-vtree@1.0.0</h1>
+      <h1>rc-vtree@1.0.1</h1>
 
       <p>a react component of tree use react-virtualize</p>
     </div>
@@ -378,8 +378,13 @@ for (var i = 10000 - 1; i &gt;= 0; i--) {
           <span class="hljs-tag">&lt;<span class="hljs-title">Tree</span>
             <span class="hljs-attribute">height</span>=<span class="hljs-value">{50}</span>
             <span class="hljs-attribute">onExpand</span>=<span class="hljs-value">{this.onExpand}</span>
-            <span class="hljs-attribute">treeData</span>=<span class="hljs-value">{treeData}</span>
-          &gt;</span>
+            <span class="hljs-attribute">rowRenderer</span>=<span class="hljs-value">{(item,</span> {<span class="hljs-attribute">index</span>, <span class="hljs-attribute">isScrolling</span>, <span class="hljs-attribute">key</span>, <span class="hljs-attribute">parent</span>, <span class="hljs-attribute">style</span>})=&gt;</span>{
+              return <span class="hljs-tag">&lt;<span class="hljs-title">TreeNode</span>
+                <span class="hljs-attribute">title</span>=<span class="hljs-value">{&lt;span</span>&gt;</span>{item.title}......<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>}
+              &gt;<span class="hljs-tag">&lt;/<span class="hljs-title">TreeNode</span>&gt;</span>
+            }}
+            treeData={treeData}
+          &gt;
           <span class="hljs-tag">&lt;/<span class="hljs-title">Tree</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
