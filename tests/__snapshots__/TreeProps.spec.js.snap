@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tree Props custom switcher icon switcher icon 1`] = `
+<div
+  style="overflow:visible;height:0;width:0"
+>
+  <div
+    aria-label="grid"
+    aria-readonly="true"
+    class="ReactVirtualized__Grid ReactVirtualized__List rc-tree"
+    role="tree"
+    style="box-sizing:border-box;direction:ltr;height:0;position:relative;width:0;-webkit-overflow-scrolling:touch;will-change:transform;overflow-x:hidden;overflow-y:auto"
+    tabindex="0"
+  />
+</div>
+`;

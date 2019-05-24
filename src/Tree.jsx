@@ -35,6 +35,7 @@ export class TreeList extends React.Component {
     selectable: PropTypes.bool,
     selectedKeys: PropTypes.arrayOf(PropTypes.string),
     onExpand: PropTypes.func,
+    switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   }
   static defaultProps = {
     prefixCls: 'rc-tree',
@@ -62,7 +63,7 @@ export class TreeList extends React.Component {
 
   getChildContext() {
     const {
-      prefixCls, selectable, checkable
+      prefixCls, selectable, checkable, switcherIcon
     } = this.props;
 
     return {
@@ -72,6 +73,7 @@ export class TreeList extends React.Component {
         prefixCls,
         checkable,
         selectable,
+        switcherIcon,
         onNodeExpand: this.onNodeExpand,
         onNodeCheck: this.onNodeCheck,
         onNodeClick: this.onNodeClick,
