@@ -103,7 +103,7 @@ export function traverseTreeNodes(treeNodes, callback) {
  * @param treeNodes
  * @param processTreeEntity  User can customize the entity
  */
-export function convertTreeToEntities(treeNodes) {
+export function convertTreeToEntities(treeNodes, { initWrapper, processEntity, onProcessFinished } = {}) {
 
 
   const posEntities = {};
@@ -113,9 +113,13 @@ export function convertTreeToEntities(treeNodes) {
     keyEntities,
   };
 
+  if (initWrapper) {
+    wrapper = initWrapper(wrapper) || wrapper;
+  }
+
   traverseTreeNodes(treeNodes, (item) => {
-    const { index, pos, key, parentPos } = item;
-    const entity = { index, key, pos };
+    const { index, pos, key, parentPos, node } = item;
+    const entity = { node, index, key, pos };
 
     posEntities[pos] = entity;
     keyEntities[key] = entity;
@@ -126,11 +130,15 @@ export function convertTreeToEntities(treeNodes) {
       entity.parent.children = entity.parent.children || [];
       entity.parent.children.push(entity);
     }
+
+    if (processEntity) {
+      processEntity(entity, wrapper);
+    }
   });
 
-  /*if (onProcessFinished) {
+  if (onProcessFinished) {
     onProcessFinished(wrapper);
-  }*/
+  }
 
   return wrapper;
 }
