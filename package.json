@@ -1,6 +1,6 @@
 {
   "name": "rc-vtree",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "a react component of tree use react-virtualize",
   "main": "lib/index",
   "module": "./es/index",
@@ -30,8 +30,12 @@
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "prepublish": "rc-tools run guard",
+    "prepublish": "rc-tools run pub --babel-runtime",
     "semantic-release": "semantic-release"
+  },
+  "release": {
+    "ci": false,
+    "dryRun": false
   },
   "jest": {
     "setupFiles": [
