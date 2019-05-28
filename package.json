@@ -30,7 +30,7 @@
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "prepublish": "rc-tools run pub --babel-runtime",
+    "prepublish": "rc-tools run compile",
     "semantic-release": "semantic-release"
   },
   "release": {
