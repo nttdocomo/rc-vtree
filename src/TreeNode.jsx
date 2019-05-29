@@ -112,6 +112,22 @@ class TreeNode extends React.Component {
     const targetChecked = !checked;
     onNodeCheck(e, this, targetChecked);
   };
+
+  onMouseEnter = (e) => {
+    const { rcTree: { onNodeMouseEnter } } = this.context;
+    onNodeMouseEnter(e, this);
+  };
+
+  onMouseLeave = (e) => {
+    const { rcTree: { onNodeMouseLeave } } = this.context;
+    onNodeMouseLeave(e, this);
+  };
+
+  onContextMenu = (e) => {
+    console.log('onContextMenu')
+    const { rcTree: { onNodeContextMenu } } = this.context;
+    onNodeContextMenu(e, this);
+  };
   // Switcher
   renderSwitcher = () => {
     const {
@@ -199,6 +215,7 @@ class TreeNode extends React.Component {
     } else if (loadData && loading) {
       $icon = this.renderIcon();
     }
+    console.log(this.onContextMenu)
 
     return (
       <span

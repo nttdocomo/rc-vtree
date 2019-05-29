@@ -36,6 +36,9 @@ export class TreeList extends React.Component {
     selectedKeys: PropTypes.arrayOf(PropTypes.string),
     onExpand: PropTypes.func,
     switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onRightClick: PropTypes.func,
   }
   static defaultProps = {
     prefixCls: 'rc-tree',
@@ -78,6 +81,9 @@ export class TreeList extends React.Component {
         onNodeCheck: this.onNodeCheck,
         onNodeClick: this.onNodeClick,
         onNodeSelect: this.onNodeSelect,
+        onNodeMouseEnter: this.onNodeMouseEnter,
+        onNodeMouseLeave: this.onNodeMouseLeave,
+        onNodeContextMenu: this.onNodeContextMenu,
       },
     };
   }
@@ -300,7 +306,29 @@ export class TreeList extends React.Component {
         nativeEvent: e.nativeEvent,
       });
     }
-  }
+  };
+
+  onNodeMouseEnter = (event, node) => {
+    const { onMouseEnter } = this.props;
+    if (onMouseEnter) {
+      onMouseEnter({ event, node });
+    }
+  };
+
+  onNodeMouseLeave = (event, node) => {
+    const { onMouseLeave } = this.props;
+    if (onMouseLeave) {
+      onMouseLeave({ event, node });
+    }
+  };
+
+  onNodeContextMenu = (event, node) => {
+    const { onRightClick } = this.props;
+    if (onRightClick) {
+      event.preventDefault();
+      onRightClick({ event, node });
+    }
+  };
   /**
    * Only update the value which is not in props
    */
@@ -363,6 +391,7 @@ export class TreeList extends React.Component {
     }
   }
   render(){
+    console.log('aaaaa')
     const {
       prefixCls, className, focusable,
       showLine, tabIndex = 0, treeData,
@@ -385,6 +414,7 @@ export class TreeList extends React.Component {
       //ref:setRef,
       rowHeight={cache.rowHeight}
       rowRenderer={({index, isScrolling, key, parent, style}) => {
+        console.log('asads')
         const item = flatTreeData[index]
         if(!item){
           return null

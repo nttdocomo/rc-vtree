@@ -3,7 +3,6 @@ import React from 'react';
 import { render, mount, shallow } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
 import { TreeList as Tree, TreeNode} from '..';
-import { List } from 'react-virtualized';
 
 const OPEN_CLASSNAME = '.rc-tree-switcher_open';
 const CHECKED_CLASSNAME = '.rc-tree-checkbox-checked';
@@ -12,10 +11,6 @@ const SIZE = {
   height: 50,
   width: 500
 }
-const dom = document.createElement('div')
-dom.style.height = "50px";
-dom.style.width = "500px";
-document.body.appendChild(dom);
 
 describe('Tree Basic', () => {
   it('renders correctly', () => {
@@ -438,4 +433,29 @@ describe('Tree Basic', () => {
       //expect(wrapper.find('.rc-tree-checkbox')).toHaveLength(2);
     });
   })
+  
+  it('fires rightClick event', () => {
+    const handleRightClick = jest.fn();
+    const wrapper = mount(
+      <Tree
+        {...SIZE}
+        onRightClick={()=>{
+          console.log('asdasd')
+        }}
+        treeData={[{
+          title: "parent 1",
+          key: "0-0",
+          children: [{
+            title: "leaf 1",
+            key: "0-0-0"
+          }]
+        }]}
+      />
+    );
+    console.log(wrapper.find('.rc-tree-node-content-wrapper').props()['onContextMenu'])
+    //wrapper.find('.rc-tree-node-content-wrapper').first().simulate('contextMenu');
+    console.log(wrapper.find('.rc-tree-node-content-wrapper').first().html())
+    console.log(handleRightClick.mock.calls)
+    expect(handleRightClick.mock.calls[0][0].node).toBe(wrapper.find(TreeNode).instance());
+  });
 });
