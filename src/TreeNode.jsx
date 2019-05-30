@@ -124,7 +124,6 @@ class TreeNode extends React.Component {
   };
 
   onContextMenu = (e) => {
-    console.log('onContextMenu')
     const { rcTree: { onNodeContextMenu } } = this.context;
     onNodeContextMenu(e, this);
   };
@@ -215,7 +214,6 @@ class TreeNode extends React.Component {
     } else if (loadData && loading) {
       $icon = this.renderIcon();
     }
-    console.log(this.onContextMenu)
 
     return (
       <span

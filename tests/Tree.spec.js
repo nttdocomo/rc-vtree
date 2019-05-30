@@ -439,9 +439,7 @@ describe('Tree Basic', () => {
     const wrapper = mount(
       <Tree
         {...SIZE}
-        onRightClick={()=>{
-          console.log('asdasd')
-        }}
+        onRightClick={handleRightClick}
         treeData={[{
           title: "parent 1",
           key: "0-0",
@@ -452,10 +450,27 @@ describe('Tree Basic', () => {
         }]}
       />
     );
-    console.log(wrapper.find('.rc-tree-node-content-wrapper').props()['onContextMenu'])
-    //wrapper.find('.rc-tree-node-content-wrapper').first().simulate('contextMenu');
-    console.log(wrapper.find('.rc-tree-node-content-wrapper').first().html())
-    console.log(handleRightClick.mock.calls)
+    wrapper.find('.rc-tree-node-content-wrapper').first().simulate('contextMenu');
     expect(handleRightClick.mock.calls[0][0].node).toBe(wrapper.find(TreeNode).instance());
+  });
+
+  it('fires rightClick should not change selected item', () => {
+    const handleRightClick = jest.fn();
+    const wrapper = mount(
+      <Tree
+        {...SIZE}
+        onRightClick={handleRightClick}
+        treeData={[{
+          title: "parent 1",
+          key: "0-0",
+          children: [{
+            title: "leaf 1",
+            key: "0-0-0"
+          }]
+        }]}
+      />
+    );
+    wrapper.find('.rc-tree-node-content-wrapper').simulate('contextMenu');
+    expect(wrapper.state().selectedKeys.length).toBe(0);
   });
 });

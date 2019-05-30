@@ -391,7 +391,6 @@ export class TreeList extends React.Component {
     }
   }
   render(){
-    console.log('aaaaa')
     const {
       prefixCls, className, focusable,
       showLine, tabIndex = 0, treeData,
@@ -414,7 +413,6 @@ export class TreeList extends React.Component {
       //ref:setRef,
       rowHeight={cache.rowHeight}
       rowRenderer={({index, isScrolling, key, parent, style}) => {
-        console.log('asads')
         const item = flatTreeData[index]
         if(!item){
           return null
