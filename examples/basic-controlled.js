@@ -3,7 +3,7 @@ import 'rc-vtree/assets/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Tree, { TreeNode } from 'rc-vtree';
+import Tree from 'rc-vtree';
 import 'rc-dialog/assets/index.css';
 import Modal from 'rc-dialog';
 import { gData, getRadioSelectKeys } from './util';
@@ -14,10 +14,12 @@ class Demo extends React.Component {
     visible: PropTypes.bool,
     multiple: PropTypes.bool,
   };
+
   static defaultProps = {
     visible: false,
     multiple: true,
   };
+
   state = {
     // expandedKeys: getFilterExpandedKeys(gData, ['0-0-0-key']),
     expandedKeys: ['0-0-0-key'],
@@ -28,6 +30,7 @@ class Demo extends React.Component {
     selectedKeys: [],
     treeData: [],
   };
+
   onExpand = (expandedKeys) => {
     console.log('onExpand');
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -37,11 +40,13 @@ class Demo extends React.Component {
       autoExpandParent: false,
     });
   }
+
   onCheck = (checkedKeys) => {
     this.setState({
       checkedKeys,
     });
   }
+
   onCheckStrictly = (checkedKeys, /* extra */) => {
     // console.log(arguments);
     // const { checkedNodesPositions } = extra;
@@ -57,12 +62,14 @@ class Demo extends React.Component {
       // checkStrictlyKeys: checkedKeys,
     });
   }
+
   onSelect = (selectedKeys, info) => {
     console.log('onSelect', selectedKeys, info);
     this.setState({
       selectedKeys,
     });
   }
+
   onRbSelect = (selectedKeys, info) => {
     let _selectedKeys = selectedKeys;
     if (info.selected) {
@@ -72,16 +79,19 @@ class Demo extends React.Component {
       selectedKeys: _selectedKeys,
     });
   }
+
   onClose = () => {
     this.setState({
       visible: false,
     });
   }
+
   handleOk = () => {
     this.setState({
       visible: false,
     });
   }
+
   showModal = () => {
     this.setState({
       expandedKeys: ['0-0-0-key', '0-0-1-key'],
@@ -95,20 +105,33 @@ class Demo extends React.Component {
       });
     }, 2000);
   }
+
   triggerChecked = () => {
     this.setState({
       checkedKeys: [`0-0-${parseInt(Math.random() * 3, 10)}-key`],
     });
   }
+
   render() {
-    const selectedKeys = getRadioSelectKeys(gData, this.state.selectedKeys)
-    console.log(selectedKeys)
-    // console.log(getRadioSelectKeys(gData, this.state.selectedKeys));
+    const { multiple } = this.props
+    const {
+      selectedKeys,
+      visible,
+      expandedKeys,
+      autoExpandParent,
+      checkedKeys,
+      treeData,
+      checkStrictlyKeys
+    } = this.state
     return (<div style={{ padding: '0 20px' }}>
       <h2>dialog</h2>
-      <button className="btn btn-primary" onClick={this.showModal}>show dialog</button>
+      <button
+        className="btn btn-primary"
+        onClick={this.showModal}
+        type="button"
+      >show dialog</button>
       <Modal
-        title="TestDemo" visible={this.state.visible}
+        title="TestDemo" visible={visible}
         onOk={this.handleOk} onClose={this.onClose}
       >
         <div
@@ -116,13 +139,13 @@ class Demo extends React.Component {
             height:50
           }}
         >
-          {this.state.treeData.length ? (
+          {treeData.length ? (
             <Tree
               checkable className="dialog-tree"
-              onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
-              autoExpandParent={this.state.autoExpandParent}
-              onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}
-              treeData={this.state.treeData}
+              onExpand={this.onExpand} expandedKeys={expandedKeys}
+              autoExpandParent={autoExpandParent}
+              onCheck={this.onCheck} checkedKeys={checkedKeys}
+              treeData={treeData}
             />
           ) : 'loading...'}
         </div>
@@ -136,14 +159,17 @@ class Demo extends React.Component {
       >
         <Tree
           checkable
-          onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
-          autoExpandParent={this.state.autoExpandParent}
-          onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}
-          onSelect={this.onSelect} selectedKeys={this.state.selectedKeys}
+          onExpand={this.onExpand} expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
+          onCheck={this.onCheck} checkedKeys={checkedKeys}
+          onSelect={this.onSelect} selectedKeys={selectedKeys}
           treeData={gData}
         />
       </div>
-      <button onClick={this.triggerChecked}>trigger checked</button>
+      <button
+        onClick={this.triggerChecked}
+        type="button"
+      >trigger checked</button>
 
       <h2>checkStrictly</h2>
       <div
@@ -152,10 +178,13 @@ class Demo extends React.Component {
         }}
       >
         <Tree
-          checkable multiple={this.props.multiple} defaultExpandAll
-          onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
+          checkable
+          multiple={multiple}
+          defaultExpandAll
+          onExpand={this.onExpand}
+          expandedKeys={expandedKeys}
           onCheck={this.onCheckStrictly}
-          checkedKeys={this.state.checkStrictlyKeys}
+          checkedKeys={checkStrictlyKeys}
           checkStrictly
           treeData={gData}
         />
@@ -170,7 +199,7 @@ class Demo extends React.Component {
         <Tree
           multiple defaultExpandAll
           onSelect={this.onRbSelect}
-          selectedKeys={selectedKeys }
+          selectedKeys={ getRadioSelectKeys(gData, selectedKeys) }
           treeData={gData}
         />
       </div>

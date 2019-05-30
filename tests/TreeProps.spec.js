@@ -1,10 +1,7 @@
 import React from 'react';
-import { render, mount } from 'enzyme';
-import { renderToJson } from 'enzyme-to-json';
-import Animate from 'rc-animate';
+import { render } from 'enzyme';
 import PropTypes from 'prop-types';
-import Tree, { TreeNode } from '..';
-import { nodeMatcher } from './util';
+import Tree from '..';
 
 describe('Tree Props', () => {
   describe('custom switcher icon', () => {
@@ -37,8 +34,7 @@ describe('Tree Props', () => {
           	  key:"0-1-1"
           	}]
           }]}
-        >
-        </Tree>
+        />
       );
       expect(wrapper).toMatchSnapshot();
     });

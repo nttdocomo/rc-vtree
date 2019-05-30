@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { CellMeasurer, CellMeasurerCache, AutoSizer, List } from 'react-virtualized';
 import TreeNode from './TreeNode';
 import { treeContextTypes } from './contextTypes';
-import { CellMeasurer, CellMeasurerCache, AutoSizer, List } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 
 import {
   nodeHasChildren,
+  getDataAndAria,
   isNodeExpanded,
   getFlattenedTree,
   convertTreeToEntities,
@@ -28,18 +29,37 @@ const cache = new CellMeasurerCache({
 export class TreeList extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
+    className: PropTypes.string,
+    tabIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    showLine: PropTypes.bool,
+    focusable: PropTypes.bool,
     defaultExpandParent: PropTypes.bool,
     autoExpandParent: PropTypes.bool,
     expandedKeys: PropTypes.arrayOf(PropTypes.string),
     defaultExpandedKeys: PropTypes.arrayOf(PropTypes.string),
     selectable: PropTypes.bool,
+    multiple: PropTypes.bool,
+    checkable: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.node,
+    ]),
+    checkStrictly: PropTypes.bool,
     selectedKeys: PropTypes.arrayOf(PropTypes.string),
+    onClick: PropTypes.func,
     onExpand: PropTypes.func,
+    onCheck: PropTypes.func,
+    onSelect: PropTypes.func,
     switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onRightClick: PropTypes.func,
+    rowRenderer: PropTypes.func,
+    onRowsRendered: PropTypes.func,
+
+    width: PropTypes.number,
+    height: PropTypes.number,
   }
+
   static defaultProps = {
     prefixCls: 'rc-tree',
     selectable: true,
@@ -47,6 +67,7 @@ export class TreeList extends React.Component {
     autoExpandParent: false,
     defaultExpandedKeys: [],
   };
+
   static childContextTypes = treeContextTypes;
 
   constructor(props) {
@@ -87,11 +108,8 @@ export class TreeList extends React.Component {
       },
     };
   }
+
   getFlattenedTree = (nodes, parents = []) => {
-    const {
-      prefixCls, className, focusable,
-      showLine, tabIndex = 0, treeData, defaultExpandAll
-    } = this.props;
     return nodes.reduce((flattenedTree, { children, ...node }) => {
       const deepness = parents.length;
       const nodeWithHelpers = {...node, deepness, parents};
@@ -103,6 +121,7 @@ export class TreeList extends React.Component {
       return [...flattenedTree, nodeWithHelpers, ...getFlattenedTree(children, [...parents, node.id])];
     }, []);
   }
+
   static getDerivedStateFromProps(props, prevState) {
     const { prevProps } = prevState;
     const newState = {
@@ -111,7 +130,6 @@ export class TreeList extends React.Component {
     function needSync(name) {
       return (!prevProps && name in props) || (prevProps && prevProps[name] !== props[name]);
     }
-    let flatTreeData = null;
 
     // Tree support filter function which will break the tree structure in the vdm.
     // We cache the treeNodes in state so that we can return the treeNode in event trigger.
@@ -123,17 +141,6 @@ export class TreeList extends React.Component {
       newState.posEntities = entitiesMap.posEntities;
       newState.keyEntities = entitiesMap.keyEntities;
     }
-
-    /*keyEntities
-    key:{
-      children:
-      index:
-      key:
-      node:
-      parent:
-      pos:
-    }
-    */
 
     const keyEntities = newState.keyEntities || prevState.keyEntities;
 
@@ -157,10 +164,9 @@ export class TreeList extends React.Component {
       }
     }
     // Check if `treeData` or `children` changed and save into the state.
-    /*if (needSync('treeData')) {
-      flatTreeData = getFlattenedTree(props.treeData, [], newState.expandedKeys);
-      newState.flatTreeData = flatTreeData;
-    }*/
+    if (needSync('treeData') || needSync('expandedKeys')) {
+      newState.flatTreeData = getFlattenedTree(props.treeData, [], newState.expandedKeys);
+    }
     // ================= checkedKeys =================
     if (props.checkable) {
       let checkedKeyEntity;
@@ -231,6 +237,7 @@ export class TreeList extends React.Component {
       onSelect(selectedKeys, eventObj);
     }
   };
+
   onNodeCheck = (e, treeNode, checked) => {
     const { keyEntities, checkedKeys: oriCheckedKeys, halfCheckedKeys: oriHalfCheckedKeys } = this.state;
     const { checkStrictly, onCheck } = this.props;
@@ -264,7 +271,6 @@ export class TreeList extends React.Component {
       checkedObj = checkedKeys;
 
       // [Legacy] This is used for `rc-tree-select`
-      /*eventObj.checkedNodes = [];*/
       eventObj.checkedNodesPositions = [];
       eventObj.halfCheckedKeys = halfCheckedKeys;
 
@@ -273,8 +279,6 @@ export class TreeList extends React.Component {
         if (!entity) return;
 
         const { pos } = entity;
-
-        //eventObj.checkedNodes.push(node);
         eventObj.checkedNodesPositions.push({ pos });
       });
 
@@ -288,6 +292,7 @@ export class TreeList extends React.Component {
       onCheck(checkedObj, eventObj);
     }
   }
+
   onNodeExpand = (e, treeNode) => {
     let { expandedKeys } = this.state;
     const { onExpand } = this.props;
@@ -329,6 +334,7 @@ export class TreeList extends React.Component {
       onRightClick({ event, node });
     }
   };
+
   /**
    * Only update the value which is not in props
    */
@@ -347,10 +353,12 @@ export class TreeList extends React.Component {
       this.setState(newState);
     }
   };
+
   isKeyChecked = (key) => {
     const { checkedKeys = [] } = this.state;
     return checkedKeys.indexOf(key) !== -1;
   };
+
   renderTreeNode = (item, {index, isScrolling, key, parent, style}) => {
     const {
       rowRenderer
@@ -360,49 +368,51 @@ export class TreeList extends React.Component {
       halfCheckedKeys = [],
       selectedKeys = []
     } = this.state;
-    const { children, isLeaf, title, ...props } = item
+    const { children, isLeaf, ...props } = item
     let child
 
     if(rowRenderer){
-      const { children, isLeaf, title, ...props } = item
       child = rowRenderer(item, {index, isScrolling, key, parent, style})
       return React.cloneElement(child, {
-        isLeaf: isLeaf,
+        isLeaf,
         eventKey: item.key,
         expanded: expandedKeys.indexOf(item.key) !== -1,
         selected: selectedKeys.indexOf(item.key) !== -1,
         checked: this.isKeyChecked(item.key),
         halfChecked: halfCheckedKeys.indexOf(item.key) !== -1,
-        style:style,
+        style,
         ...props
       });
-    } else {
-      const { children, isLeaf, ...props } = item
-      return <TreeNode
-        {...props}
-        isLeaf={isLeaf}
-        eventKey={item.key}
-        expanded={expandedKeys.indexOf(item.key) !== -1}
-        checked={this.isKeyChecked(item.key)}
-        selected={selectedKeys.indexOf(item.key) !== -1}
-        halfChecked={halfCheckedKeys.indexOf(item.key) !== -1}
-        style={style}
-      />
     }
+    return <TreeNode
+      {...props}
+      isLeaf={isLeaf}
+      eventKey={item.key}
+      expanded={expandedKeys.indexOf(item.key) !== -1}
+      checked={this.isKeyChecked(item.key)}
+      selected={selectedKeys.indexOf(item.key) !== -1}
+      halfChecked={halfCheckedKeys.indexOf(item.key) !== -1}
+      style={style}
+    />
   }
+
   render(){
     const {
       prefixCls, className, focusable,
-      showLine, tabIndex = 0, treeData,
-      height, width, rowRenderer
+      showLine, tabIndex = 0,
+      height, width, onRowsRendered
     } = this.props;
     const {
-      expandedKeys = [],
-      halfCheckedKeys = [],
-      selectedKeys = []
+      flatTreeData
     } = this.state;
-    const flatTreeData = getFlattenedTree(treeData, [], expandedKeys);
+    const domProps = getDataAndAria(this.props);
+
+    if (focusable) {
+      domProps.tabIndex = tabIndex;
+      domProps.onKeyDown = this.onKeyDown;
+    }
     return <List
+      {...domProps}
       className={classNames(prefixCls, className, {
         [`${prefixCls}-show-line`]: showLine,
       })}
@@ -410,14 +420,12 @@ export class TreeList extends React.Component {
       unselectable="on"
       height={height}
       overscanRowCount={1}
-      //ref:setRef,
       rowHeight={cache.rowHeight}
       rowRenderer={({index, isScrolling, key, parent, style}) => {
         const item = flatTreeData[index]
         if(!item){
           return null
         }
-        //return convertDataToTree(item)
         return <CellMeasurer
           cache={cache}
           columnIndex={0}
@@ -426,37 +434,16 @@ export class TreeList extends React.Component {
           rowIndex={index}
         >
           {this.renderTreeNode(item, {index, isScrolling, key, parent, style})}
-          {/*
-          <TreeNode
-            {...props}
-            isLeaf={item.isLeaf}
-            eventKey={item.key}
-            expanded={expandedKeys.indexOf(item.key) !== -1}
-            checked={this.isKeyChecked(item.key)}
-            selected={selectedKeys.indexOf(item.key) !== -1}
-            halfChecked={halfCheckedKeys.indexOf(item.key) !== -1}
-            style={style}
-          />*/}
         </CellMeasurer>;
-        // return this.renderTreeNode(treeNode, index)
-        /*return React.cloneElement(child, {
-          style:Object.assign({}, style, {
-            paddingLeft: 18*child.props.pos.split('-')[0]
-          })
-        });*/
-        //return this.renderTreeNode(nodeList[index], index, style)
-        /*return mapChildren(nodeList, (node, index) => (
-          this.renderTreeNode(node, index)
-        ));*/
       }}
-      onRowsRendered={this.props.onRowsRendered}
+      onRowsRendered={onRowsRendered}
       rowCount={flatTreeData.length}
       width={width}
     />
   }
 }
 
-export function Tree (props) {
+const Tree = (props) => {
   return (
     <AutoSizer>
       {(param) => {

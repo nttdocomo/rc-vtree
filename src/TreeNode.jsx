@@ -2,17 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { nodeContextTypes } from './contextTypes';
+import {
+  getDataAndAria,
+} from './util';
 
 const ICON_OPEN = 'open';
 const ICON_CLOSE = 'close';
 
 class TreeNode extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
     // By parent
     expanded: PropTypes.bool,
+    selected: PropTypes.bool,
+    checked: PropTypes.bool,
+    loading: PropTypes.bool,
+    halfChecked: PropTypes.bool,
+    title: PropTypes.node,
+    dragOver: PropTypes.bool,
+    dragOverGapTop: PropTypes.bool,
+    dragOverGapBottom: PropTypes.bool,
+    deepness: PropTypes.number,
+
+    // By user
+    isLeaf: PropTypes.bool,
+    selectable: PropTypes.bool,
+    disabled: PropTypes.bool,
+    disableCheckbox: PropTypes.bool,
+    icon: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     switcherIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
   };
+
   static contextTypes = nodeContextTypes;
+
   static childContextTypes = nodeContextTypes;
 
   constructor(props) {
@@ -31,6 +54,7 @@ class TreeNode extends React.Component {
       },
     };
   }
+
   isDisabled = () => {
     const { disabled } = this.props;
     const { rcTree: { disabled: treeDisabled } } = this.context;
@@ -43,17 +67,6 @@ class TreeNode extends React.Component {
     return !!(treeDisabled || disabled);
   };
 
-  isSelectable() {
-    const { selectable } = this.props;
-    const { rcTree: { selectable: treeSelectable } } = this.context;
-
-    // Ignore when selectable is undefined or null
-    if (typeof selectable === 'boolean') {
-      return selectable;
-    }
-
-    return treeSelectable;
-  }
   getNodeState = () => {
     const { expanded } = this.props;
 
@@ -65,14 +78,14 @@ class TreeNode extends React.Component {
   };
 
   isLeaf = () => {
-    const { isLeaf, loaded } = this.props;
-    const { rcTree: { loadData } } = this.context;
+    const { isLeaf } = this.props;
 
-    /*if (isLeaf === false) {
+    /* if (isLeaf === false) {
       return false;
-    }*/
+    } */
     return isLeaf
   };
+
   // Disabled item still can be switch
   onExpand = (e) => {
     const { rcTree: { onNodeExpand } } = this.context;
@@ -98,6 +111,7 @@ class TreeNode extends React.Component {
     e.preventDefault();
     onNodeSelect(e, this);
   };
+
   onCheck = (e) => {
     if (this.isDisabled()) return;
 
@@ -127,6 +141,19 @@ class TreeNode extends React.Component {
     const { rcTree: { onNodeContextMenu } } = this.context;
     onNodeContextMenu(e, this);
   };
+
+  isSelectable() {
+    const { selectable } = this.props;
+    const { rcTree: { selectable: treeSelectable } } = this.context;
+
+    // Ignore when selectable is undefined or null
+    if (typeof selectable === 'boolean') {
+      return selectable;
+    }
+
+    return treeSelectable;
+  }
+
   // Switcher
   renderSwitcher = () => {
     const {
@@ -159,6 +186,7 @@ class TreeNode extends React.Component {
       </span>
     );
   };
+
   // Checkbox
   renderCheckbox = () => {
     const { checked, halfChecked, disableCheckbox } = this.props;
@@ -184,6 +212,7 @@ class TreeNode extends React.Component {
       </span>
     );
   };
+
   // Icon + Title
   renderSelector = () => {
     const { dragNodeHighlight } = this.state;
@@ -239,6 +268,7 @@ class TreeNode extends React.Component {
       </span>
     );
   }
+
   render() {
     const { loading } = this.props;
     const {
@@ -255,7 +285,7 @@ class TreeNode extends React.Component {
       draggable,
     } } = this.context;
     const disabled = this.isDisabled();
-    const dataOrAriaAttributeProps = {}//getDataAndAria(otherProps);
+    const dataOrAriaAttributeProps = getDataAndAria(otherProps);
 
     return (
       <div
@@ -276,8 +306,6 @@ class TreeNode extends React.Component {
 
         style={style}
 
-        role="treeitem"
-
         onDragEnter={draggable ? this.onDragEnter : undefined}
         onDragOver={draggable ? this.onDragOver : undefined}
         onDragLeave={draggable ? this.onDragLeave : undefined}
@@ -288,10 +316,6 @@ class TreeNode extends React.Component {
         {this.renderSwitcher()}
         {this.renderCheckbox()}
         {this.renderSelector()}
-        {/*this.renderSwitcher()}
-        {this.renderCheckbox()}
-        {this.renderSelector()}
-        this.renderChildren()*/}
       </div>
     );
   }

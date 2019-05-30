@@ -1,7 +1,6 @@
-import React, { Children } from 'react';
 import toArray from 'rc-util/lib/Children/toArray';
-import TreeNode from './TreeNode';
 import warning from 'warning';
+// import TreeNode from './TreeNode';
 
 export const isNodeExpanded = (node, expandedKeys) => expandedKeys.indexOf(node.key) > -1;
 export const nodeHasChildren = children => children !== undefined && children.length > 0;
@@ -28,7 +27,7 @@ export function isCheckDisabled(node) {
   return !!(disabled || disableCheckbox);
 }
 
-const internalProcessProps = props => props;
+/* const internalProcessProps = props => props;
 export function convertDataToTree(treeData, processer) {
   if (!treeData) return [];
 
@@ -36,11 +35,10 @@ export function convertDataToTree(treeData, processer) {
   const list = Array.isArray(treeData) ? treeData : [treeData];
   return list.map(({ children, ...props }) => {
     return (
-      <TreeNode {...processProps(props)}>
-      </TreeNode>
+      <TreeNode {...processProps(props)}/>
     );
   });
-}
+} */
 
 export const getFlattenedTree = (nodes, parents = [], expandedKeys = []) =>
   nodes.reduce((flattenedTree, { children, ...node }) => {
@@ -58,6 +56,10 @@ export function getPosition(level, index) {
   return `${level}-${index}`;
 }
 
+export function isTreeNode(node) {
+  return node && node.type && node.type.isTreeNode;
+}
+
 export function getNodeChildren(children) {
   return toArray(children).filter(isTreeNode);
 }
@@ -68,7 +70,7 @@ export function traverseTreeNodes(treeNodes, callback) {
     const pos = node ? getPosition(parent.pos, index) : 0;
 
     // Filter children
-    //const childList = getNodeChildren(children);
+    // const childList = getNodeChildren(children);
 
     // Process node if is not root
     if (node) {
@@ -89,9 +91,9 @@ export function traverseTreeNodes(treeNodes, callback) {
     }
 
     // Process children node
-    /*Children.forEach(childList, (subNode, subIndex) => {
+    /* Children.forEach(childList, (subNode, subIndex) => {
       processNode(subNode, subIndex, { node, pos });
-    });*/
+    }); */
   }
 
   processNode(null);
@@ -365,4 +367,17 @@ export function conductExpandParent(keyList, keyEntities) {
   });
 
   return Object.keys(expandedKeys);
+}
+
+/**
+ * Returns only the data- and aria- key/value pairs
+ * @param {object} props 
+ */
+export function getDataAndAria(props) {
+  return Object.keys(props).reduce((prev, key) => {
+    if ((key.substr(0, 5) === 'data-' || key.substr(0, 5) === 'aria-')) {
+      prev[key] = props[key];
+    }
+    return prev;
+  }, {});
 }

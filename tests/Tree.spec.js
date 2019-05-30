@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, react/no-multi-comp, react/no-unused-state, react/prop-types, no-return-assign */
 import React from 'react';
-import { render, mount, shallow } from 'enzyme';
+import { render, mount } from 'enzyme';
 import { renderToJson } from 'enzyme-to-json';
 import { TreeList as Tree, TreeNode} from '..';
 
@@ -43,12 +43,6 @@ describe('Tree Basic', () => {
             disableCheckbox: true
           }]
         }]}
-        onRowsRendered={({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex })=>{
-          console.log(overscanStartIndex)
-          console.log(overscanStopIndex)
-          console.log(startIndex)
-          console.log(stopIndex)
-        }}
       />
     );
     expect(renderToJson(wrapper)).toMatchSnapshot();
@@ -324,7 +318,6 @@ describe('Tree Basic', () => {
           }]}
         />
       );
-      const checkboxs = wrapper.find('.rc-tree-checkbox')
       wrapper.find('.rc-tree-switcher').simulate('click');
       wrapper.find('.rc-tree-checkbox').at(1).simulate('click');
       wrapper.find('.rc-tree-checkbox').last().simulate('click');
@@ -382,16 +375,7 @@ describe('Tree Basic', () => {
       });
     });
     it('fires check event', () => {
-      const handleCheck = /*(checkedObj, eventObj)=>{
-        console.log(eventObj.node.props.title)
-        expect(eventObj.node).toBeInstanceOf(TreeNode);
-        if(count === 1){
-          expect(eventObj.node).toEqual(treeElm1)
-        } else {
-          expect(eventObj.node).toEqual(treeElm2)
-        }
-      }*/
-      jest.fn();
+      const handleCheck = jest.fn();
       const wrapper = mount(
         <Tree
           {...SIZE}
@@ -407,17 +391,17 @@ describe('Tree Basic', () => {
           }]}
         />
       );
-      //console.log('click switcher')
+      // console.log('click switcher')
       wrapper.find('.rc-tree-switcher').simulate('click');
-      //console.log(wrapper.html())
+      // console.log(wrapper.html())
       const treeNode1 = wrapper.find(TreeNode).first();
-      const treeNode2 = wrapper.find(TreeNode).last();
+      // const treeNode2 = wrapper.find(TreeNode).last();
       const treeElm1 = treeNode1.instance();
-      const treeElm2 = treeNode2.instance();
+      // const treeElm2 = treeNode2.instance();
 
       wrapper.find('.rc-tree-checkbox').first().simulate('click');
-      //console.log(wrapper.html())
-      //点击第一个checkbox之后第二个checkbox就没了
+      // console.log(wrapper.html())
+      // 点击第一个checkbox之后第二个checkbox就没了
       expect(handleCheck).toBeCalledWith(['0-0', '0-0-0'], {
         checked: true,
         event: 'check',
@@ -429,8 +413,31 @@ describe('Tree Basic', () => {
         node: treeElm1,
         nativeEvent: expect.objectContaining({}),
       });
-      //console.log(wrapper.instance())
-      //expect(wrapper.find('.rc-tree-checkbox')).toHaveLength(2);
+      // console.log(wrapper.instance())
+      // expect(wrapper.find('.rc-tree-checkbox')).toHaveLength(2);
+    });
+  })
+
+  describe('select', () => {
+    it('selects default selected keys', () => {
+      const wrapper = mount(
+        <Tree
+          {...SIZE}
+          selectable
+          defaultSelectedKeys={['0-0']}
+          treeData={[{
+            title: "parent 1",
+            key: "0-0",
+            children: [{
+              title: "leaf 1",
+              key: "0-0-0"
+            }]
+          }]}
+        />
+      );
+      expect(
+        wrapper.find('.rc-tree-node-content-wrapper').is(SELECTED_CLASSNAME)
+      ).toBe(true);
     });
   })
   

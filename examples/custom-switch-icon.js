@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import Tree, { TreeNode } from 'rc-vtree';
+import Tree from 'rc-vtree';
 import 'rc-vtree/assets/index.less';
 
 const arrowPath = 'M869 487.8L491.2 159.9c-2.9-2.5-6.6-3.9-10.5-3.9h-88' +
@@ -63,9 +63,11 @@ class Demo extends React.Component {
   static propTypes = {
     keys: PropTypes.array,
   };
+
   static defaultProps = {
     keys: ['0-0-0-0'],
   };
+
   constructor(props) {
     super(props);
     const keys = props.keys;
@@ -75,7 +77,14 @@ class Demo extends React.Component {
       defaultCheckedKeys: keys,
     };
   }
+
   render() {
+    const {
+      useIcon,
+      defaultExpandedKeys,
+      defaultSelectedKeys,
+      defaultCheckedKeys
+    } = this.state
     const switcherIcon = (obj) => {
       if (obj.isLeaf) {
         return getSvgIcon(arrowPath,
@@ -86,20 +95,19 @@ class Demo extends React.Component {
         { cursor: 'pointer', backgroundColor: 'white' },
         { transform: `rotate(${obj.expanded ? 90 : 0}deg)` });
     };
-    const treeCls = `myCls${this.state.useIcon && ' customIcon' || ''}`;
+    const treeCls = `myCls${useIcon && ' customIcon' || ''}`;
 
     return (
       <div id="demo" style={{ margin: '0 20px' }}>
         <h2>custom switch icon</h2>
         <Tree
           className={treeCls} showLine checkable defaultExpandAll
-          defaultExpandedKeys={this.state.defaultExpandedKeys}
-          defaultSelectedKeys={this.state.defaultSelectedKeys}
-          defaultCheckedKeys={this.state.defaultCheckedKeys}
+          defaultExpandedKeys={defaultExpandedKeys}
+          defaultSelectedKeys={defaultSelectedKeys}
+          defaultCheckedKeys={defaultCheckedKeys}
           switcherIcon={switcherIcon}
           treeData={treeData}
-        >
-        </Tree>
+        />
       </div>
     );
   }
