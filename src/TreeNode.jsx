@@ -306,6 +306,9 @@ class TreeNode extends React.Component {
 
         style={style}
 
+        role="treeitem"
+        tabIndex="-1"
+
         onDragEnter={draggable ? this.onDragEnter : undefined}
         onDragOver={draggable ? this.onDragOver : undefined}
         onDragLeave={draggable ? this.onDragLeave : undefined}

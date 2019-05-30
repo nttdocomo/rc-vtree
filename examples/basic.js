@@ -93,7 +93,6 @@ class Demo extends React.Component {
           }}
         >
           <Tree
-            height={50}
             onExpand={this.onExpand}
             rowRenderer={(item)=>{
               return <TreeNode

@@ -31,6 +31,7 @@ export class TreeList extends React.Component {
     prefixCls: PropTypes.string,
     className: PropTypes.string,
     tabIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    treeData: PropTypes.array, // Generate treeNode by children
     showLine: PropTypes.bool,
     focusable: PropTypes.bool,
     defaultExpandParent: PropTypes.bool,
@@ -75,7 +76,6 @@ export class TreeList extends React.Component {
 
     this.state = {
       keyEntities: {},
-      flatTreeData: [],
       selectedKeys: [],
       checkedKeys: [],
       halfCheckedKeys: [],
@@ -164,9 +164,6 @@ export class TreeList extends React.Component {
       }
     }
     // Check if `treeData` or `children` changed and save into the state.
-    if (needSync('treeData') || needSync('expandedKeys')) {
-      newState.flatTreeData = getFlattenedTree(props.treeData, [], newState.expandedKeys);
-    }
     // ================= checkedKeys =================
     if (props.checkable) {
       let checkedKeyEntity;
@@ -399,13 +396,14 @@ export class TreeList extends React.Component {
   render(){
     const {
       prefixCls, className, focusable,
-      showLine, tabIndex = 0,
+      showLine, tabIndex = 0, treeData,
       height, width, onRowsRendered
     } = this.props;
     const {
-      flatTreeData
+      expandedKeys
     } = this.state;
     const domProps = getDataAndAria(this.props);
+    const flatTreeData = getFlattenedTree(treeData, [], expandedKeys)
 
     if (focusable) {
       domProps.tabIndex = tabIndex;
