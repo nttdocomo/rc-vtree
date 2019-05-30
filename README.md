@@ -1,6 +1,8 @@
 # rc-vtree
 ---
+
 a react component of tree use react-virtualize
+
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Test coverage][codecov-image]][codecov-url]
