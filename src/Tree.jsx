@@ -59,6 +59,7 @@ export class TreeList extends React.Component {
 
     width: PropTypes.number,
     height: PropTypes.number,
+    filterTreeNode: PropTypes.func,
   }
 
   static defaultProps = {
@@ -87,7 +88,7 @@ export class TreeList extends React.Component {
 
   getChildContext() {
     const {
-      prefixCls, selectable, checkable, switcherIcon
+      prefixCls, selectable, checkable, switcherIcon, filterTreeNode,
     } = this.props;
 
     return {
@@ -98,6 +99,7 @@ export class TreeList extends React.Component {
         checkable,
         selectable,
         switcherIcon,
+        filterTreeNode,
         onNodeExpand: this.onNodeExpand,
         onNodeCheck: this.onNodeCheck,
         onNodeClick: this.onNodeClick,

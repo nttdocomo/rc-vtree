@@ -480,4 +480,39 @@ describe('Tree Basic', () => {
     wrapper.find('.rc-tree-node-content-wrapper').simulate('contextMenu');
     expect(wrapper.state().selectedKeys.length).toBe(0);
   });
+
+  it('filters nodes', () => {
+    function filterTreeNode(treeNode) {
+      return treeNode.props.title.indexOf('parent') > -1;
+    }
+    const wrapper = mount(
+      <Tree
+        {...SIZE}
+        filterTreeNode={filterTreeNode}
+        treeData={[{
+          title: "parent 1",
+          key: "0-0",
+          children: [{
+            title: "leaf 1",
+            key: "0-0-0",
+            children: [{
+              title: "meck",
+              key: "0-0-0-0",
+            }, {
+              title: "leaf",
+              key: "0-0-0-1",
+            }]
+          }, {
+            title: "leaf 2",
+            key: "0-0-1",
+          }]
+        }]}
+      />
+    );
+    console.log(wrapper.find(TreeNode))
+    console.log(wrapper.find(TreeNode).html())
+    console.log(wrapper.find(TreeNode).hasClass('filter-node'))
+
+    expect(wrapper.find(TreeNode).is('.rc-tree-treenode-switcher-close')).toBe(true);
+  });
 });
