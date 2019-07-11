@@ -5,7 +5,7 @@
   "main": "lib/index",
   "module": "./es/index",
   "config": {
-    "port": 8018,
+    "port": 8008,
     "entry": {
       "rc-vtree": [
         "./assets/index.less",

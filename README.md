@@ -13,3 +13,15 @@ a react component of tree use react-virtualize
 [travis-url]: https://travis-ci.org/nttdocomo/rc-vtree
 [codecov-image]: https://img.shields.io/codecov/c/github/nttdocomo/rc-vtree.svg?logo=codecov
 [codecov-url]: https://codecov.io/gh/nttdocomo/rc-vtree/branch/master
+
+## Usage
+
+see examples
+
+## API
+
+### Tree props
+
+| name     | description    | type     | default      |
+|----------|----------------|----------|--------------|
+| rowRenderer | it execs when render row | function(node) | _ |

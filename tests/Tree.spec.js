@@ -509,10 +509,7 @@ describe('Tree Basic', () => {
         }]}
       />
     );
-    console.log(wrapper.find(TreeNode))
-    console.log(wrapper.find(TreeNode).html())
-    console.log(wrapper.find(TreeNode).hasClass('filter-node'))
-
-    expect(wrapper.find(TreeNode).is('.rc-tree-treenode-switcher-close')).toBe(true);
+    const node = wrapper.find('.filter-node')
+    expect(node).toHaveLength(1)
   });
 });

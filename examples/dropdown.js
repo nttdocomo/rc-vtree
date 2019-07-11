@@ -174,7 +174,7 @@ class Demo extends React.Component {
   filterTreeNode = (treeNode) => {
     console.log(treeNode);
     // 根据 key 进行搜索，可以根据其他数据，如 value
-    return this.filterFn(treeNode.props.eventKey);
+    return this.filterFn(treeNode.props.title);
   }
   filterFn = (key) => {
     if (this.state.inputValue && key.indexOf(this.state.inputValue) > -1) {
@@ -185,7 +185,7 @@ class Demo extends React.Component {
   render() {
     const loop = data => {
       return data.map((item) => {
-        if (this.filterKeys && this.filterFn(item.key)) {
+        if (this.filterKeys && this.filterFn(item.title)) {
           this.filterKeys.push(item.key);
         }
         if (item.children) {
