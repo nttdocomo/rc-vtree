@@ -39,6 +39,7 @@ jobs:
       name: "Deploy"
       script:
         - |
+          echo $GH_TOKEN
           npm run semantic-release
       env:
         - GH_TOKEN=2e66b0882c480c7aac64b83c36bc8b4f6ae0a689
