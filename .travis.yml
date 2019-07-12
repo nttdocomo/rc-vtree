@@ -31,9 +31,7 @@ jobs:
       name: "Deploy"
       script:
         - |
-          echo "$GH_TOKEN"
-          echo "$NPM_TOKEN"
           npm run semantic-release
 
-# NPM_TOKEN=31d04a44-311f-4500-8d5e-bfaa53b49619
-# GH_TOKEN=f0456a7be6dd989d8f4fba829b87e944fc1cff2b
+# NPM_TOKEN=88a4ce2e-5209-4419-92c3-ba7708cd93cb
+# GH_TOKEN=0c057280596d851a9a3a16a39e6a5db3ef58cdfe
