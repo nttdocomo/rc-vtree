@@ -27,8 +27,6 @@ script:
       npm run $TEST_TYPE
     fi
 env:
-  - GH_TOKEN=2bdf9d01eaa3928c541bf81aa9c4fd0f0e2c7538
-  - NPM_TOKEN=e51ed299-8592-4539-b358-1e722680775a
   matrix:
   - TEST_TYPE=lint
   - TEST_TYPE=test
