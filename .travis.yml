@@ -27,10 +27,6 @@ jobs:
         - |
           npm test -- --coverage && \
           bash <(curl -s https://codecov.io/bash)
-    - script:
-        - |
-          npm run lint
-      name: "Lint Tests"
     - stage: deploy
       name: "Deploy"
       script:
