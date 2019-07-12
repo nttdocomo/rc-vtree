@@ -32,6 +32,3 @@ jobs:
       script:
         - |
           npm run semantic-release
-
-# NPM_TOKEN=88a4ce2e-5209-4419-92c3-ba7708cd93cb
-# GH_TOKEN=0c057280596d851a9a3a16a39e6a5db3ef58cdfe
